@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    List<GodErlang.Entity.Models.ProductStatus> productStatus = ViewBag.ProductStatus as List<GodErlang.Entity.Models.ProductStatus>;
+}
+<link href="~/css/index.css" rel="stylesheet" />
+
+<div id="main-stats">
+    <div class="row-fluid stats-row">
+        <div class="span3 stat">
+            <div class="data">
+                <span class="number">2457</span>
+                visits
+            </div>
+            <span class="date">Today</span>
+        </div>
+        <div class="span3 stat">
+            <div class="data">
+                <span class="number">3240</span>
+                users
+            </div>
+            <span class="date">February 2014</span>
+        </div>
+        <div class="span3 stat">
+            <div class="data">
+                <span class="number">322</span>
+                orders
+            </div>
+            <span class="date">This week</span>
+        </div>
+        <div class="span3 stat last">
+            <div class="data">
+                <span class="number">$2,340</span>
+                sales
+            </div>
+            <span class="date">last 30 days</span>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 0px 40px;">
+    <!-- the script for the toggle all checkboxes from header is located in js/theme.js -->
+    <div class="table-products section">
+        <div class="row-fluid head">
+            <div class="span12">
+                <h4>Product Urls <small>product processing progress</small></h4>
+            </div>
+        </div>
+
+        <div class="row-fluid filter-block">
+            <div class="pull-right">
+                <select style="width:200px;" name="sel_status" class="ui-select">
+                    <option value="-1">All Status</option>
+                    <option value="0">NotStart</option>
+                    <option value="1">Running</option>
+                    <option value="2">RunFailed</option>
+                    <option value="3">Completed</option>
+                </select>
+                <script type="text/javascript">
+                    document.getElementsByName('sel_status')[0].value='@ViewBag.State';
+                </script>
+                <a class="btn-flat new-product" href="/product/add">+ Add product</a>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="span3">
+                            Product Url
+                        </th>
+                        <th class="span3">
+                            <span class="line"></span>Add Time
+                        </th>
+                        <th class="span3">
+                            <span class="line"></span>Status
+                        </th>
+                        <th class="span3">
+                            <span class="line"></span>Consuming Time
+                        </th>
+                        <th class="span3">
+                            <span class="line"></span>Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in productStatus)
+                    {
+                        int? execSeconds = GodErlang.Common.CommonTools.GetTimeSeconds(item.StartExecTime, item.EndExecTime);
+                        <tr>
+                            <td>
+                                <a href="@item.ReferUrl" title="@item.ReferUrl" target="_blank">@item.ReferUrl</a>
+                            </td>
+                            <td class="description">
+                                @GodErlang.Common.CommonTools.GetDefaultFormatTime(item.AddTime)
+                            </td>
+                            <td class="description">
+                                @switch (item.State)
+                                {
+                                    case GodErlang.Entity.ProductExecState.Running:
+                                        <span class="label label-info">@item.State.ToString()</span>
+                                        break;
+                                    case GodErlang.Entity.ProductExecState.RunFailed:
+                                        <span class="label label-important">@item.State.ToString()</span>
+                                        break;
+                                    case GodErlang.Entity.ProductExecState.Completed:
+                                        <span class="label label-success">@item.State.ToString()</span>
+                                        break;
+                                    case GodErlang.Entity.ProductExecState.NotStart:
+                                    default:
+                                        <span class="label label-default">@item.State.ToString()</span>
+                                        break;
+                                }
+                            </td>
+                            <td class="description">
+                                @(execSeconds != null ? execSeconds + " s" : "")
+                            </td>
+                            <td class="description">
+                                <a href="javascript:;" data-statusId="@item.Id" name="action_delstatus">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var isRunning = false;
+    var UI = {
+        Loading: function (obj) {
+            $(obj).html("<span class='loading'>Waiting...</span>");
+        },
+        HideLoading: function (obj) {
+            $(obj).html("Delete");
+        }
+    };
+
+    $(function () {
+        $("a[name=action_delstatus]").bind("click", e => {
+            if (isRunning) {
+                return false;
+            }
+            isRunning = true;
+
+            DelStatus(e.currentTarget);
+        });
+        $("select[name=sel_status]").bind("change", e => {
+            console.log(e.currentTarget.value);
+            window.location.href = "/?st=" + e.currentTarget.value;
+        })
+    });
+
+    function DelStatus(obj) {
+        UI.Loading(obj);
+        $.post("/product/removestatus", { statusId: obj.dataset.statusid }, data => {
+            isRunning = false;
+            if (data.state == true) {
+                $(obj).parent().parent().remove();
+            } else {
+                UI.HideLoading(obj);
+                alert(data.error)
+            }
+        })
+    }
+</script>
