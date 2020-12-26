@@ -11,6 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="sharesettings.home.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="sharesettings.company.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
