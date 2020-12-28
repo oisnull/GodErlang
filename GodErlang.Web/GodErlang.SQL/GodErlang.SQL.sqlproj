@@ -63,8 +63,6 @@
     <Build Include="ProductPriceHistory.sql" />
     <Build Include="ProductStatus.sql" />
     <Build Include="ProductDetails.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="GodErlang.SQL.refactorlog" />
+    <Build Include="User.sql" />
   </ItemGroup>
 </Project>

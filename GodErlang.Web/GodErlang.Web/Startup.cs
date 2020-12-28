@@ -50,6 +50,7 @@ namespace GodErlang.Web
             //    app.UseHsts();
             //}
 
+            Models.AppHttpContext.Services = app.ApplicationServices;
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

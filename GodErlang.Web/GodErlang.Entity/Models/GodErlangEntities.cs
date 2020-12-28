@@ -19,6 +19,7 @@ namespace GodErlang.Entity.Models
         public virtual DbSet<ProductDetails> ProductDetails { get; set; }
         public virtual DbSet<ProductPriceHistory> ProductPriceHistory { get; set; }
         public virtual DbSet<ProductStatus> ProductStatus { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -110,6 +111,27 @@ namespace GodErlang.Entity.Models
                 entity.Property(e => e.ReferUrl).HasMaxLength(500);
 
                 entity.Property(e => e.StartExecTime).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Email).HasMaxLength(100);
+
+                entity.Property(e => e.HeadImage).HasMaxLength(100);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.Property(e => e.PhoneNum).HasMaxLength(13);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
         }
     }

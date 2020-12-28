@@ -68,4 +68,17 @@ namespace GodErlang.Entity
         RunFailed = 2,
         Completed = 3,
     }
+
+    public enum UserState
+    {
+        Normal = 0,
+        Disable = 1,
+    }
+
+    public enum UserSex
+    {
+        Women = 0,
+        Man = 1,
+        Unknow = 2,
+    }
 }

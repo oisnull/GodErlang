@@ -159,7 +159,9 @@ namespace GodErlang.ConsoleTest
 
             //RdsSubTest();
 
-            UrlMonitoring();
+            //UrlMonitoring();
+
+            AddTestUser();
         }
 
         static void UrlMonitoring()
@@ -212,6 +214,23 @@ namespace GodErlang.ConsoleTest
             ExecuteTask.DefaultInstance.StartMonitoring();
             Console.WriteLine("Monitoring start ...");
             Console.ReadKey();
+        }
+
+        static void AddTestUser()
+        {
+            try
+            {
+                UserService userService = new UserService(DBContext);
+                userService.Save("aa@qq.com", "123456");
+                userService.Save("bb@qq.com", "123456");
+                Console.WriteLine("Done");
+            }
+            catch (Exception ex)
+            {
+                Output(ex.ToString(), ConsoleColor.Red);
+            }
+
+            Console.ReadLine();
         }
 
         //static void RdsSubTest()

@@ -36,17 +36,23 @@
         </a>
 
         <div class="span4 box">
-            <div class="content-wrap">
-                <h6>Log in</h6>
-                <input class="span12" type="text" placeholder="E-mail address">
-                <input class="span12" type="password" placeholder="Your password">
-                <a href="http://demo2.cssmoban.com/cssthemes6/11.19ZF3/signin.html#" class="forgot">Forgot password?</a>
-                <div class="remember">
-                    <input id="remember-me" type="checkbox">
-                    <label for="remember-me">Remember me</label>
+            <form action="/account/signin" method="post">
+                <div class="content-wrap">
+                    <h6>Log in</h6>
+                    <input class="span12" type="text" id="account" name="account" placeholder="E-mail address">
+                    <input class="span12" type="password" id="pwd" name="pwd" placeholder="Your password">
+                    <a href="#" class="forgot">Forgot password?</a>
+                    <div class="remember">
+                        <input id="remember-me" type="checkbox">
+                        <label for="remember-me">Remember me</label>
+                    </div>
+                    <button class="btn-glow primary login" type="submit" onclick="return CheckParams(this);">Log in</button>
+                    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        <div class='alert alert-error' style="margin-top:20px;"><i class='icon-remove-sign'></i>@ViewBag.ErrorMessage</div>
+                    }
                 </div>
-                <a class="btn-glow primary login" href="http://demo2.cssmoban.com/cssthemes6/11.19ZF3/index.html">Log in</a>
-            </div>
+            </form>
         </div>
 
         <div class="span4 no-account">
@@ -56,3 +62,27 @@
     </div>
 </body>
 </html>
+
+<script type="text/javascript">
+
+    window.onload = () => {
+        document.getElementsByTagName('form')[0].reset();
+    };
+
+    function CheckParams(btnObj) {
+        var accountObj = document.getElementById('account');
+        if (!!!accountObj.value.trim()) {
+            accountObj.focus();
+            return false;
+        }
+
+        var pwdObj = document.getElementById('pwd');
+        if (!!!pwdObj.value.trim()) {
+            pwdObj.focus();
+            return false;
+        }
+
+        btnObj.innerText = "Waiting...";
+        return true;
+    }
+</script>

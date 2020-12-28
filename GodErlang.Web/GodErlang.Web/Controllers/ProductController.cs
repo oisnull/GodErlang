@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using GodErlang.Entity.Models;
 using GodErlang.Service;
+using GodErlang.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GodErlang.Web.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         ProductService productService;
 
