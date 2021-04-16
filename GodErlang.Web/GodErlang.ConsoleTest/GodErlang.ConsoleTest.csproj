@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="driver\**" />
+    <EmbeddedResource Remove="driver\**" />
+    <None Remove="driver\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
@@ -14,15 +20,6 @@
     <ProjectReference Include="..\GodErlang.Common\GodErlang.Common.csproj" />
     <ProjectReference Include="..\GodErlang.Entity\GodErlang.Entity.csproj" />
     <ProjectReference Include="..\GodErlang.Service\GodErlang.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="driver\chromedriver.exe">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="driver\geckodriver.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

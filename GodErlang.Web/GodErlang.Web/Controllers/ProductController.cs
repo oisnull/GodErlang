@@ -61,5 +61,17 @@ namespace GodErlang.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult Extract()
+        {
+            return View();
+        }
+
+        public IActionResult ExtractDo(string productUrl)
+        {
+
+
+            return View();
+        }
     }
 }

@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace GodErlang.Service.Source
@@ -18,9 +19,15 @@ namespace GodErlang.Service.Source
 
         public string GetActualPriceDesc()
         {
-            return _driver.FindElement(By.Id("productPrice"))
-                            .FindElements(By.TagName("meta"))[0]
-                            .GetAttribute("content");
+            //return _driver.FindElement(By.Id("productPrice"))
+            //                .FindElements(By.TagName("meta"))[0]
+            //                .GetAttribute("content");
+            ReadOnlyCollection<IWebElement> elements = _driver.FindElements(By.XPath("//div[@id='rootContainer_BuyBox']/div/section/div/div/div/p/span"));
+            if (elements.Count > 0)
+            {
+                return elements[0].Text;
+            }
+            return null;
         }
 
         public string GetOfferType()
@@ -35,16 +42,15 @@ namespace GodErlang.Service.Source
 
         public string GetOriginId()
         {
-            By by = By.Name("ms.prod_id");
-            IWebElement element = _driver.FindElement(by);
-            return element.GetAttribute("content");
+            //By by = By.Name("ms.prod_id");
+            //IWebElement element = _driver.FindElement(by);
+            //return element.GetAttribute("content");
+            return new Uri(_driver.Url).Segments.LastOrDefault();
         }
 
         public string GetPriceCurrency()
         {
-            return _driver.FindElement(By.Id("productPrice"))
-                            .FindElements(By.TagName("meta"))[1]
-                            .GetAttribute("content");
+            return GetActualPriceDesc();
         }
 
         public string GetPromotionPriceDesc()
@@ -66,7 +72,13 @@ namespace GodErlang.Service.Source
 
         public string ProductImages()
         {
-            return _driver.FindElement(By.Id("productImage")).FindElement(By.TagName("img")).GetAttribute("src");
+            //return _driver.FindElement(By.Id("productImage")).FindElement(By.TagName("img")).GetAttribute("src");
+            ReadOnlyCollection<IWebElement> elements = _driver.FindElements(By.XPath("//div[@id='rootContainer_BuyBox']/div/section/div/div/div/picture/img"));
+            if (elements.Count > 0)
+            {
+                return elements[0].GetAttribute("src");
+            }
+            return null;
         }
     }
 }

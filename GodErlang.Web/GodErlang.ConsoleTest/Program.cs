@@ -4,6 +4,7 @@ using GodErlang.Entity.Models;
 using GodErlang.Service;
 using GodErlang.Service.Source;
 using GodErlang.Service.Storage;
+using GodErlang.ShareConfig;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using System;
@@ -16,6 +17,14 @@ namespace GodErlang.ConsoleTest
     class Program
     {
         static GodErlangEntities DBContext { get; } = GodErlangDBContext.GetDBContext(ShareConfig.AppConfigManager.DBConnectionString);
+
+        static void WriteColorLine(string str, ConsoleColor color)
+        {
+            ConsoleColor currentForeColor = Console.ForegroundColor;
+            Console.ForegroundColor = color;
+            Console.WriteLine(str);
+            Console.ForegroundColor = currentForeColor;
+        }
 
         static void Save(string referUrl, IProductSource productSource)
         {
@@ -56,7 +65,7 @@ namespace GodErlang.ConsoleTest
 
         static void FetchTest()
         {
-            using (IWebDriver driver = WebDriverLoader.GetChromeDriver())
+            using (IWebDriver driver = SeleniumDriverManager.GetChromeDriver(AppContext.BaseDirectory))
             {
                 foreach (var item in InitConfig.TEST_URLS)
                 {
@@ -68,11 +77,40 @@ namespace GodErlang.ConsoleTest
             }
         }
 
+        static void FetchAndOutputToConsoleTest()
+        {
+            using (IWebDriver driver = SeleniumDriverManager.GetChromeDriver(AppContext.BaseDirectory))
+            {
+                foreach (var item in InitConfig.TEST_URLS)
+                {
+                    driver.Navigate().GoToUrl(item.SourceUrl);
+
+                    IProductSource productSource = ProductSourceFactory.Builder(driver, item.SourceType);
+                    try
+                    {
+                        Console.WriteLine(productSource.GetSourceType().ToString());
+                        Console.WriteLine(productSource.GetOriginId());
+                        Console.WriteLine(productSource.GetTitle());
+                        Console.WriteLine(productSource.GetActualPriceDesc());
+                        Console.WriteLine(productSource.GetPromotionPriceDesc());
+                        Console.WriteLine(productSource.GetPriceCurrency());
+                        Console.WriteLine(productSource.GetOfferType());
+                        Console.WriteLine(productSource.ProductImages());
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteColorLine(ex.ToString(), ConsoleColor.Red);
+                    }
+                }
+            }
+            Console.ReadKey();
+        }
+
         static void ResetDatas()
         {
             GeneralProductService productService = new GeneralProductService(DBContext);
             List<GeneralProduct> products = productService.GetAll();
-            using (IWebDriver driver = WebDriverLoader.GetChromeDriver())
+            using (IWebDriver driver = SeleniumDriverManager.GetChromeDriver(AppContext.BaseDirectory))
             {
                 foreach (var item in products)
                 {
@@ -96,7 +134,7 @@ namespace GodErlang.ConsoleTest
             GeneralProductService productService = new GeneralProductService(DBContext);
             List<GeneralProduct> products = productService.GetAll();
 
-            using (IWebDriver driver = WebDriverLoader.GetChromeDriver())
+            using (IWebDriver driver = SeleniumDriverManager.GetChromeDriver(AppContext.BaseDirectory))
             {
                 foreach (var item in products)
                 {
@@ -161,7 +199,7 @@ namespace GodErlang.ConsoleTest
 
             //UrlMonitoring();
 
-            AddTestUser();
+            FetchAndOutputToConsoleTest();
         }
 
         static void UrlMonitoring()
@@ -175,7 +213,7 @@ namespace GodErlang.ConsoleTest
                     Tuple<int, int, string> queueValue = ProductManager.GetUrlsQueueValue(value);
                     ProductService productService = new ProductService(DBContext);
                     productService.SetStart(queueValue.Item2);
-                    using (IWebDriver driver = WebDriverLoader.GetChromeDriver())
+                    using (IWebDriver driver = SeleniumDriverManager.GetChromeDriver(AppContext.BaseDirectory))
                     {
                         driver.Navigate().GoToUrl(queueValue.Item3);
 
