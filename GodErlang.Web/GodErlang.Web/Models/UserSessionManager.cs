@@ -11,9 +11,7 @@ namespace GodErlang.Web.Models
         {
             if (AppHttpContext.Current.Session.IsAvailable) return true;
 
-            ShareConfig.LogHelper.Error($"GE后台管理系统下的Session服务不可用，Session是存储在redis里面，请检测redis是否已经开户或者redis的相关配置是否正确", typeof(UserSessionManager));
-
-            return false;
+            throw new Exception($"GE后台管理系统下的Session服务不可用，Session是存储在redis里面，请检测redis是否已经开户或者redis的相关配置是否正确");
         }
 
         public static SessionUser GetCurrentUser()

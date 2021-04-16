@@ -52,5 +52,29 @@ namespace GodErlang.ShareConfig
                 return RedisSettings["ProductUrlsRedisHosts"];
             }
         }
+
+        public static string GEUserSessionRedisHosts
+        {
+            get
+            {
+                return RedisSettings["GEUserSessionRedisHosts"];
+            }
+        }
+
+        public static string GEUserSessionRedisInstance
+        {
+            get
+            {
+                return RedisSettings["GEUserSessionRedisInstance"];
+            }
+        }
+
+        public static int GEUserSessionTimeOut
+        {
+            get
+            {
+                return Convert.ToInt32(RedisSettings["GEUserSessionTimeOut"]);
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace GodErlang.Web.Controllers
 
             try
             {
-                System.Threading.Thread.Sleep(3000);
+                //System.Threading.Thread.Sleep(3000);
                 var user = userService.Login(account, pwd);
                 Models.UserSessionManager.SetUser(user);
                 return Redirect("/home/index");
