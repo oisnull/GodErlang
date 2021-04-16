@@ -20,7 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevLog", "DevLog", "{78D897
 		DevLog\progress-1.txt = DevLog\progress-1.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodErlang.ShareConfig", "GodErlang.ShareConfig\GodErlang.ShareConfig.csproj", "{D84940FE-8582-4530-A6F7-5A7113167669}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodErlang.ShareConfig", "GodErlang.ShareConfig\GodErlang.ShareConfig.csproj", "{D84940FE-8582-4530-A6F7-5A7113167669}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{DEA5EA10-3544-46FE-949E-461B9B71059B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{29771B14-5C75-4CB0-82E5-5B33DC1D70CA} = {DEA5EA10-3544-46FE-949E-461B9B71059B}
+		{53B65681-6234-43F5-A21E-412B60E370F2} = {DEA5EA10-3544-46FE-949E-461B9B71059B}
+		{FD507AE7-3D74-47D7-9EC9-73A4A09BBB22} = {DEA5EA10-3544-46FE-949E-461B9B71059B}
+		{D84940FE-8582-4530-A6F7-5A7113167669} = {DEA5EA10-3544-46FE-949E-461B9B71059B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2C6F2FBD-BB99-4B18-ADF3-79FD38DE2051}
